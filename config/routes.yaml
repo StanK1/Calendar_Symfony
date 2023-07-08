@@ -2,3 +2,16 @@
 app_homepage:
     path: /
     controller: App\Controller\HomeController::index
+
+save_appointment:
+    path: /save-appointment
+    controller: App\Controller\AppointmentController::save
+    methods: POST
+
+appointment_save:
+    path: /save-appointment
+    controller: App\Controller\AppointmentController::save
+
+appointment_success:
+    path: /appointment-success
+    controller: App\Controller\AppointmentController::success

@@ -3,46 +3,46 @@
 namespace App\Controller;
 
 use App\Entity\Appointment;
-use App\Form\AppointmentType;
+use App\Form\AppointmentFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AppointmentController extends AbstractController
 {
     /**
-     * @Route("/calendar", name="app_calendar")
+     * @Route("/save-appointment", name="save_appointment", methods={"POST"})
      */
-    public function calendar(Request $request): Response
+    public function save(Request $request, ValidatorInterface $validator): Response
     {
-        // Create a new instance of the Appointment entity
         $appointment = new Appointment();
-
-        // Create the appointment form
-        $form = $this->createForm(AppointmentType::class, $appointment);
-
-        // Handle form submission
+        $form = $this->createForm(AppointmentFormType::class, $appointment);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            // Persist the appointment to the database
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($appointment);
             $entityManager->flush();
 
-            // Redirect to the calendar view with a success message
-            $this->addFlash('success', 'Appointment successfully saved.');
-
-            return $this->redirectToRoute('app_calendar');
+            return $this->redirectToRoute('appointment_success');
         }
 
-        // Fetch the scheduled appointments from the database
+        return $this->render('appointment/calendar.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/", name="home")
+     */
+    public function index(): Response
+    {
         $appointments = $this->getDoctrine()->getRepository(Appointment::class)->findAll();
 
-        // Render the calendar view and appointment form
-        return $this->render('appointment/calendar.html.twig', [
+        return $this->render('appointment/index.html.twig', [
             'appointments' => $appointments,
-            'form' => $form->createView(),
         ]);
     }
 }

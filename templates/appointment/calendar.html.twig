@@ -1,47 +1,13 @@
+{# templates/appointment/calendar.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Appointment Calendar</h1>
+{% block content %}
+    <h1>Calendar</h1>
 
-    <table>
-        <!-- Render the calendar with available time slots -->
-    </table>
-
-    <h2>Scheduled Appointments</h2>
-    <ul>
-        {% for appointment in appointments %}
-            <li>{{ appointment.name }} - {{ appointment.date|date('Y-m-d') }} at {{ appointment.time|time('H:i') }}</li>
-        {% endfor %}
-    </ul>
-
-    <h2>Make an Appointment</h2>
-    {{ form_start(form) }}
-    <div>
-        {{ form_label(form.date) }}
-        {{ form_widget(form.date) }}
-        {{ form_errors(form.date) }}
+    <div class="appointment-form">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Save Appointment</button>
+        {{ form_end(form) }}
     </div>
-    <div>
-        {{ form_label(form.name) }}
-        {{ form_widget(form.name) }}
-        {{ form_errors(form.name) }}
-    </div>
-    <div>
-        {{ form_label(form.email) }}
-        {{ form_widget(form.email) }}
-        {{ form_errors(form.email) }}
-    </div>
-    <div>
-        {{ form_label(form.phone) }}
-        {{ form_widget(form.phone) }}
-        {{ form_errors(form.phone) }}
-    </div>
-    <div>
-        {{ form_widget(form.save) }}
-    </div>
-    {{ form_end(form) }}
-
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
 {% endblock %}

@@ -11,7 +11,7 @@
     <h2>Scheduled Appointments</h2>
     <ul>
         {% for appointment in appointments %}
-            <li>{{ appointment.name }} - {{ appointment.date|date('Y-m-d') }} at {{ appointment.time|time('H:i') }}</li>
+            <li>{{ appointment.name }} - {{ appointment.date|date('Y-m-d') }} at {{ appointment.date|date('H:i') }}</li>
         {% endfor %}
     </ul>
 {% endblock %}
