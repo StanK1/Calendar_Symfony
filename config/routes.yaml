@@ -1,16 +1,18 @@
-# config/routes.yaml
 app_homepage:
     path: /
     controller: App\Controller\HomeController::index
+
+
+app_calendar:
+    path: /calendar
+    controller: App\Controller\CalendarController::index
+
 
 save_appointment:
     path: /save-appointment
     controller: App\Controller\AppointmentController::save
     methods: POST
 
-appointment_save:
-    path: /save-appointment
-    controller: App\Controller\AppointmentController::save
 
 appointment_success:
     path: /appointment-success

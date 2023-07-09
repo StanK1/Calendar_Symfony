@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form;
 
 use App\Entity\Appointment;
@@ -15,11 +16,16 @@ class AppointmentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date', DateTimeType::class)
+            ->add('date', DateTimeType::class, [
+                'widget' => 'single_text',
+                'attr' => ['class' => 'datepicker'],
+            ])
             ->add('name', TextType::class)
             ->add('email', EmailType::class)
             ->add('phone', TextType::class)
-            ->add('save', SubmitType::class);
+            ->add('save', SubmitType::class, [
+                'label' => 'Save Appointment',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

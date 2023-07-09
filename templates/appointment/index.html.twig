@@ -6,6 +6,17 @@
     <table>
         <!-- Render the calendar with available time slots -->
         <!-- Display the form for selecting date, time, and user details -->
+        <tr>
+            <td>
+                {{ form_start(form) }}
+                {{ form_row(form.date) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.save) }}
+                {{ form_end(form) }}
+            </td>
+        </tr>
     </table>
 
     <h2>Scheduled Appointments</h2>

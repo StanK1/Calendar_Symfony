@@ -13,6 +13,6 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('appointment/index.html.twig');
+        return $this->redirectToRoute('app_calendar');
     }
 }
