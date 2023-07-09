@@ -1,20 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CalendarController!{% endblock %}
+{% block title %}Calendar{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Calendar</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! World</h1>
+    <div class="calendar">
+        <!-- Render the calendar with available time slots -->
+        <!-- You can use a date picker library or an HTML input element for date selection -->
+        <label for="appointment-date">Date:</label>
+        <input type="date" id="appointment-date" name="date">
 
-    This friendly message is coming from:
+        <!-- You can use a time picker library or an HTML input element for time selection -->
+        <label for="appointment-time">Time:</label>
+        <input type="time" id="appointment-time" name="time">
+
+        <!-- Display the form for selecting user details -->
+        <form action="{{ path('save_appointment') }}" method="POST">
+            <label for="appointment-name">Name:</label>
+            <input type="text" id="appointment-name" name="name" required>
+
+            <label for="appointment-email">Email:</label>
+            <input type="email" id="appointment-email" name="email" required>
+
+            <label for="appointment-phone">Phone:</label>
+            <input type="text" id="appointment-phone" name="phone" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <h2>Scheduled Appointments</h2>
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/stani/OneDrive/Работен плот/Calendar_Symfony/src/Controller/CalendarController.php'|file_link(0) }}">src/Controller/CalendarController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/stani/OneDrive/Работен плот/Calendar_Symfony/templates/calendar/index.html.twig'|file_link(0) }}">templates/calendar/index.html.twig</a></code></li>
+        {% for appointment in appointments %}
+            <li>{{ appointment.name }} - {{ appointment.date|date('Y-m-d') }} at {{ appointment.date|date('H:i') }}</li>
+        {% endfor %}
     </ul>
-</div>
 {% endblock %}

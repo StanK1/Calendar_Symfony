@@ -2,27 +2,15 @@
 
 {% block body %}
     <h1>Appointment Calendar</h1>
+    <div class="calendar">
+        <a href="{{ path('app_calendar') }}">View Calendar</a>
+    </div>
 
-    <table>
-        <!-- Render the calendar with available time slots -->
-        <!-- Display the form for selecting date, time, and user details -->
-        <tr>
-            <td>
-                {{ form_start(form) }}
-                {{ form_row(form.date) }}
-                {{ form_row(form.name) }}
-                {{ form_row(form.email) }}
-                {{ form_row(form.phone) }}
-                {{ form_row(form.save) }}
-                {{ form_end(form) }}
-            </td>
-        </tr>
-    </table>
-
-    <h2>Scheduled Appointments</h2>
-    <ul>
-        {% for appointment in appointments %}
-            <li>{{ appointment.name }} - {{ appointment.date|date('Y-m-d') }} at {{ appointment.date|date('H:i') }}</li>
-        {% endfor %}
-    </ul>
+    <h2>Book Appointment</h2>
+    <form class="appointment-form" method="POST" action="{{ path('save_appointment') }}">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit">Submit</button>
+        {{ form_end(form) }}
+    </form>
 {% endblock %}

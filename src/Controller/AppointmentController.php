@@ -1,35 +1,34 @@
 <?php
 
+// src/Controller/AppointmentController.php
+
 namespace App\Controller;
 
-use App\Entity\Appointment;
-use App\Form\AppointmentFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class AppointmentController extends AbstractController
 {
-    /**
-     * @Route("/save-appointment", name="save_appointment", methods={"POST"})
-     */
-    public function save(Request $request): Response
+    public function saveAppointment(Request $request): Response
     {
-        $appointment = new Appointment();
-        $form = $this->createForm(AppointmentFormType::class, $appointment);
-        $form->handleRequest($request);
+        // Handle the form submission and save the appointment details to the database
+        
+        // Example code to retrieve form data
+        $name = $request->request->get('name');
+        $email = $request->request->get('email');
+        $phone = $request->request->get('phone');
+        $date = $request->request->get('date');
+        $time = $request->request->get('time');
+        
+        // Perform the necessary actions to save the appointment
+        
+        // Redirect to the appointment success page
+        return $this->redirectToRoute('appointment_success');
+    }
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($appointment);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('appointment_success');
-        }
-
-        return $this->render('appointment/calendar.html.twig', [
-            'form' => $form->createView(),
-        ]);
+    public function success(): Response
+    {
+        return $this->render('appointment/success.html.twig');
     }
 }
