@@ -1,34 +1,49 @@
 <?php
 
-// src/Controller/AppointmentController.php
-
 namespace App\Controller;
 
+use App\Entity\Appointment;
+use App\Repository\AppointmentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AppointmentController extends AbstractController
 {
-    public function saveAppointment(Request $request): Response
+    private $entityManager;
+    private $appointmentRepository;
+
+    public function __construct(EntityManagerInterface $entityManager, AppointmentRepository $appointmentRepository)
     {
-        // Handle the form submission and save the appointment details to the database
-        
-        // Example code to retrieve form data
-        $name = $request->request->get('name');
-        $email = $request->request->get('email');
-        $phone = $request->request->get('phone');
-        $date = $request->request->get('date');
-        $time = $request->request->get('time');
-        
-        // Perform the necessary actions to save the appointment
-        
-        // Redirect to the appointment success page
-        return $this->redirectToRoute('appointment_success');
+        $this->entityManager = $entityManager;
+        $this->appointmentRepository = $appointmentRepository;
     }
 
-    public function success(): Response
+    /**
+     * @Route("/appointment", name="appointment")
+     */
+    public function saveAppointment(Request $request): Response
     {
-        return $this->render('appointment/success.html.twig');
+        // Handle form submission
+        if ($request->isMethod('POST')) {
+            // Create a new Appointment object
+            $appointment = new Appointment();
+            $appointment->setDate(new \DateTime($request->request->get('date')));
+            $appointment->setTime(new \DateTime($request->request->get('time')));
+            $appointment->setName($request->request->get('name'));
+            $appointment->setEmail($request->request->get('email'));
+            $appointment->setPhone($request->request->get('phone'));
+
+            // Save the appointment in the database
+            $this->entityManager->persist($appointment);
+            $this->entityManager->flush();
+
+            // Redirect back to the calendar page
+            return $this->redirectToRoute('app_calendar');
+        }
+
+        return $this->render('appointment/index.html.twig');
     }
 }

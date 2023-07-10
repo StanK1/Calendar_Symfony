@@ -16,7 +16,7 @@
         <input type="time" id="appointment-time" name="time">
 
         <!-- Display the form for selecting user details -->
-        <form action="{{ path('save_appointment') }}" method="POST">
+        <form action="{{ path('app_calendar') }}" method="POST">
             <label for="appointment-name">Name:</label>
             <input type="text" id="appointment-name" name="name" required>
 
@@ -33,7 +33,7 @@
     <h2>Scheduled Appointments</h2>
     <ul>
         {% for appointment in appointments %}
-            <li>{{ appointment.name }} - {{ appointment.date|date('Y-m-d') }} at {{ appointment.date|date('H:i') }}</li>
+            <li>{{ appointment.name }} - {{ appointment.date|date('Y-m-d') }} at {{ appointment.time|date('H:i') }}</li>
         {% endfor %}
     </ul>
 {% endblock %}
