@@ -6,28 +6,26 @@
     <h1>Calendar</h1>
 
     <div class="calendar">
-        <!-- Render the calendar with available time slots -->
-        <!-- You can use a date picker library or an HTML input element for date selection -->
-        <label for="appointment-date">Date:</label>
-        <input type="date" id="appointment-date" name="date">
 
-        <!-- You can use a time picker library or an HTML input element for time selection -->
-        <label for="appointment-time">Time:</label>
-        <input type="time" id="appointment-time" name="time">
+<form action="{{ path('save_appointment') }}" method="POST">
+    <label for="appointment-date">Date:</label>
+    <input type="date" id="appointment-date" name="date">
 
-        <!-- Display the form for selecting user details -->
-        <form action="{{ path('app_calendar') }}" method="POST">
-            <label for="appointment-name">Name:</label>
-            <input type="text" id="appointment-name" name="name" required>
+    <label for="appointment-time">Time:</label>
+    <input type="time" id="appointment-time" name="time">
 
-            <label for="appointment-email">Email:</label>
-            <input type="email" id="appointment-email" name="email" required>
+    <label for="appointment-name">Name:</label>
+    <input type="text" id="appointment-name" name="name" required>
 
-            <label for="appointment-phone">Phone:</label>
-            <input type="text" id="appointment-phone" name="phone" required>
+    <label for="appointment-email">Email:</label>
+    <input type="email" id="appointment-email" name="email" required>
 
-            <button type="submit">Submit</button>
-        </form>
+    <label for="appointment-phone">Phone:</label>
+    <input type="text" id="appointment-phone" name="phone" required>
+
+    <button type="submit">Submit</button>
+</form>
+
     </div>
 
     <h2>Scheduled Appointments</h2>

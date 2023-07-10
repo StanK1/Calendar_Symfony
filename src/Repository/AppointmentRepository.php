@@ -12,10 +12,19 @@ class AppointmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Appointment::class);
     }
 
-    public function saveAppointment(Appointment $appointment): void
-    {
-        $entityManager = $this->getEntityManager();
-        $entityManager->persist($appointment);
-        $entityManager->flush();
+public function saveAppointment(Appointment $appointment): void
+{
+    $existingAppointment = $this->findOneBy([
+        'date' => $appointment->getDate(),
+        'time' => $appointment->getTime(),
+    ]);
+
+    if ($existingAppointment !== null) {
+        throw new \Exception('Appointment already exists at the selected date and time.');
     }
+
+    $entityManager = $this->getEntityManager();
+    $entityManager->persist($appointment);
+    $entityManager->flush();
+}
 }

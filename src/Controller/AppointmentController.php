@@ -21,29 +21,43 @@ class AppointmentController extends AbstractController
         $this->appointmentRepository = $appointmentRepository;
     }
 
-    /**
-     * @Route("/appointment", name="appointment")
-     */
-    public function saveAppointment(Request $request): Response
-    {
-        // Handle form submission
-        if ($request->isMethod('POST')) {
-            // Create a new Appointment object
-            $appointment = new Appointment();
-            $appointment->setDate(new \DateTime($request->request->get('date')));
-            $appointment->setTime(new \DateTime($request->request->get('time')));
-            $appointment->setName($request->request->get('name'));
-            $appointment->setEmail($request->request->get('email'));
-            $appointment->setPhone($request->request->get('phone'));
+public function saveAppointment(Request $request): Response
+{
 
-            // Save the appointment in the database
-            $this->entityManager->persist($appointment);
-            $this->entityManager->flush();
+    if ($request->isMethod('POST')) {
+        // Get the date and time values from the form
+        $dateString = $request->request->get('date');
+        $timeString = $request->request->get('time');
 
-            // Redirect back to the calendar page
-            return $this->redirectToRoute('app_calendar');
+        // Check if date and time values are present
+        if (empty($dateString) || empty($timeString)) {
+            throw new \Exception('Date and time values are required');
         }
 
-        return $this->render('appointment/index.html.twig');
+        // Create a new Appointment object
+        $appointment = new Appointment();
+
+        $date = \DateTime::createFromFormat('Y-m-d', $dateString);
+        $time = \DateTime::createFromFormat('H:i', $timeString);
+
+        if ($date === false || $time === false) {
+            throw new \Exception('Invalid date or time format: ' . $dateString . ' / ' . $timeString);
+        }
+
+        $appointment->setDate($date);
+        $appointment->setTime($time);
+        $appointment->setName($request->request->get('name'));
+        $appointment->setEmail($request->request->get('email'));
+        $appointment->setPhone($request->request->get('phone'));
+
+        // Save the appointment in the database
+        $this->appointmentRepository->saveAppointment($appointment);
+
+
+        return $this->redirectToRoute('app_calendar');
     }
+
+    return $this->render('appointment/index.html.twig');
+}
+
 }
